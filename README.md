@@ -1,0 +1,4 @@
+# VivoSDK
+banner显示之前要加上onLoad监听banner加载
+每次显示banner都要重新create
+banner重新创建之间的间隔要大于10秒
