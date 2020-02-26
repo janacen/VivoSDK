@@ -1,0 +1,59 @@
+/**vivo小游戏的banner接入，ts脚本*/
+ let banner = null;
+    let canShowBanner = true;
+    let isBannerHide = true;
+    let canHideBanner = false;
+    export function show_banner() {
+        if (canShowBanner&&isBannerHide) {
+            banner = qg.createBannerAd({
+                posId: '0a068487ce464b8d9f1eb00b383f13db',
+                style: {}
+            });
+
+            canShowBanner = false;
+
+            banner && banner.onLoad(() => {
+                banner.offLoad();
+                let bannerShow = banner.show();
+                bannerShow && bannerShow.then(() => {
+                    banner.offError();           
+                    
+                    isBannerHide = false;
+                    canHideBanner = true;
+
+                    setTimeout(() => {
+                        canShowBanner = true;
+                    }, 10000);
+                }).catch((err) => {
+
+                });
+            });
+
+            banner && banner.onError((err) => {
+                banner.offError();
+                testErrorCode(err.code);
+                setTimeout(() => {
+                    canShowBanner = true;
+                    show_banner();
+                }, 10000);
+            });
+        }
+        else {
+            setTimeout(() => {
+                canShowBanner = true;
+                show_banner();
+            }, 10000);
+        }
+
+    }
+
+
+
+    export function hide_banner() {
+        if(canHideBanner){
+            canHideBanner = false;
+            banner && banner.hide();
+           
+            isBannerHide = true;
+        }
+    }
